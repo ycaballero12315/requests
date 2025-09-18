@@ -32,4 +32,43 @@ response = requests.post(api_posts_url, json=new_post)
 print(response.status_code)
 print(response.json())
 
+try:
+    print('\nPATCH:')
+    update_post = {
+        "title": "foo updated"
+    }
+    post_id = 1
+    response = requests.patch(f"{api_posts_url}/{post_id}", json=update_post)
+    print(response.status_code)
+    print(f"Elemento actualizado: {response.json()}")
+
+except requests.exceptions.HTTPError as e:
+    print(f"HTTP Error: {e.response.status_code} - {e.response.reason}")
+
+print('\nPUT:')
+try:
+    updated_post = {
+        "userId": 1,
+        "title": "foo updated",
+        "body": "bar updated"
+    }
+    post_id = 1
+    response = requests.put(f"{api_posts_url}/{post_id}", json=updated_post)
+    print(response.status_code)
+    print(f"Elemento reemplazado: {response.json()}")   
+except requests.exceptions.HTTPError as e:
+    print(f"HTTP Error: {e.response.status_code} - {e.response.reason}")  
+
+print('\nDELETE:')
+try:
+    post_id = 1
+    response = requests.delete(f'{api_posts_url}/{post_id}')
+    print(response.status_code)
+    if response.status_code == 200:
+        print(f"Elemento con ID {post_id} eliminado.")
+    else:
+        print(f"Error al eliminar el elemento con ID {post_id}.")
+except requests.exceptions.HTTPError as e:
+    print(f'Http_Error:{e.response.status_code} - {e.response.reason}')
+
 
